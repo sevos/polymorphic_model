@@ -11,6 +11,7 @@ begin
     gem.homepage = "http://github.com/sevos/polymorphic_model"
     gem.authors = ["Artur Roszczyk"]
     gem.add_development_dependency "rspec", ">= 1.2.9"
+    gem.add_development_dependency "sqlite3-ruby", ">= 1.2.4"
 
     gem.add_dependency "activerecord", ">= 2.3.4"
     # gem is a Gem::Specification... see http://www.rubygems.org/read/chapter/20 for additional settings

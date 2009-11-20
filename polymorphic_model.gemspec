@@ -23,7 +23,10 @@ Gem::Specification.new do |s|
      "README.rdoc",
      "Rakefile",
      "VERSION",
+     "init.rb",
      "lib/polymorphic_model.rb",
+     "polymorphic_model.gemspec",
+     "rails/init.rb",
      "spec/polymorphic_model_spec.rb",
      "spec/spec.opts",
      "spec/spec_helper.rb"

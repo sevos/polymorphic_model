@@ -3,7 +3,8 @@ $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
 require 'polymorphic_model'
 require 'spec'
 require 'spec/autorun'
+require 'lib/database'
 
 Spec::Runner.configure do |config|
-  
+  set_database
 end

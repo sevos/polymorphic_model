@@ -10,18 +10,18 @@ module PolymorphicModel
 
   module ClassMethods
     def define_type(t, options = {})
+      column = @_polymorphic_column
       define_method :"#{t.to_s}?" do
-        offer_type == t.to_s
+        send(column) == t.to_s
       end
 
       if options[:singleton] == true
-        validates_uniqueness_of @_polymorphic_column, :if => :"#{t}?"
+        validates_uniqueness_of column, :if => :"#{t}?"
         self.class.instance_eval do
-          
           define_method t do
-            existing = find(:first, :conditions => {@_polymorphic_column => t.to_s})
+            existing = find(:first, :conditions => {column => t.to_s})
             if options[:autocreate]
-              existing || create!(@_polymorphic_column => t.to_s)
+              existing || create!(column => t.to_s)
             else
               existing
             end
@@ -29,7 +29,7 @@ module PolymorphicModel
           
         end
       else
-        named_scope(t.to_s, :conditions => "#{@_polymorphic_column} = '#{t.to_s}'")
+        named_scope(t, :conditions => { column => "#{t.to_s}" })
       end
     end
   end
