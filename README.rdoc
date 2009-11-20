@@ -1,6 +1,6 @@
 = polymorphic_model
 
-Description goes here.
+This is simple substitute for ActiveRecord's STI mechanism.
 
 == Note on Patches/Pull Requests
  
