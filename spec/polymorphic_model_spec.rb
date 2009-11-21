@@ -65,25 +65,60 @@ describe "When singleton type is defined" do
       end
     end
 
-    describe "when object doesn't exist yet" do
+    describe "when object doesn't exist yet", "accessor" do
       before do
         Job.destroy_all
       end
-
       it "should create object" do
         Job.basic.should be_basic
+        Job.basic.should_not be_new_record
       end
     end
 
-    describe "when object exists" do
+    describe "when object exists", "accessor" do
       before do
-        Job.basic
+        Job.create!(:job_type => "basic")
       end
-
+      it "should return object" do
+        Job.basic.should be_instance_of(Job)
+      end
       it "should not allow to create another instance of object" do
         Job.new(:job_type => "basic").should_not be_valid
       end
     end
   end
 
+  describe "without autocreate" do
+    before do
+      Job.instance_eval do
+        polymorphic_model :with_type_column => :job_type
+        define_type :basic, :singleton => true, :autocreate => false
+      end
+    end
+
+    describe "when object doesn't exist yet", "accessor" do
+      before do
+        Job.destroy_all
+      end
+      it "should not create object" do
+        Job.basic.should_not be_instance_of(Job)
+      end
+      it "should return empty scope" do
+        Job.basic.class.should == ActiveRecord::NamedScope::Scope
+      end
+    end
+
+    describe "when object exists", "accessor" do
+      before do
+        Job.create!(:job_type => "basic")
+      end
+      it "should return object" do
+        Job.basic.should be_instance_of(Job)
+      end
+      it "should not allow to create another instance of object" do
+        Job.new(:job_type => "basic").should_not be_valid
+      end
+    end
+
+  end
 end

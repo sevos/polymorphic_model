@@ -15,21 +15,17 @@ module PolymorphicModel
         send(column) == t.to_s
       end
 
+      condition_hash = {column => t.to_s}
       if options[:singleton] == true
         validates_uniqueness_of column, :if => :"#{t}?"
         self.class.instance_eval do
           define_method t do
-            existing = find(:first, :conditions => {column => t.to_s})
-            if options[:autocreate]
-              existing || create!(column => t.to_s)
-            else
-              existing
-            end
+            scope = scoped(:conditions => condition_hash)
+            scope.first || (options[:autocreate] ? create!(condition_hash) : scope)
           end
-          
         end
       else
-        named_scope(t, :conditions => { column => "#{t.to_s}" })
+        named_scope(t, :conditions => condition_hash)
       end
     end
   end
