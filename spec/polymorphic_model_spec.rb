@@ -54,6 +54,14 @@ describe "When normal collection types are defined" do
       Job.internal.count.should == 3
     end
   end
+
+  it "should allow only defined types" do
+    Job.new(:job_type => "other").should_not be_valid
+  end
+  
+  it "should provide list of defined types" do
+    Job.types.should include(:internal, :external)
+  end
 end
 
 describe "When singleton type is defined" do
