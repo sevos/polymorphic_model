@@ -5,7 +5,7 @@
 
 Gem::Specification.new do |s|
   s.name = %q{polymorphic_model}
-  s.version = "0.0.4"
+  s.version = "0.0.5"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Artur Roszczyk"]
@@ -25,9 +25,12 @@ Gem::Specification.new do |s|
      "VERSION",
      "init.rb",
      "lib/polymorphic_model.rb",
+     "lib/polymorphic_model/spec/rails/mocks.rb",
+     "lib/spec/rails/polymorphic_model.rb",
      "polymorphic_model.gemspec",
      "rails/init.rb",
      "spec/lib/database.rb",
+     "spec/polymorphic_model/spec/rails/mocks_spec.rb",
      "spec/polymorphic_model_spec.rb",
      "spec/spec.opts",
      "spec/spec_helper.rb"
@@ -39,6 +42,7 @@ Gem::Specification.new do |s|
   s.summary = %q{Alternative for ActiveRecord's Single Table Inheritance}
   s.test_files = [
     "spec/lib/database.rb",
+     "spec/polymorphic_model/spec/rails/mocks_spec.rb",
      "spec/polymorphic_model_spec.rb",
      "spec/spec_helper.rb"
   ]
