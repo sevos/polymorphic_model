@@ -35,8 +35,8 @@ describe "When normal collection types are defined" do
       define_type :internal
       define_type :external
     end
-    2.times { @external = Job.create(:job_type => "external") }
-    3.times { @internal = Job.create(:job_type => "internal") }
+    2.times { @external = Job.create!(:job_type => "external") }
+    3.times { @internal = Job.create!(:job_type => "internal") }
   end
 
   describe "check methods" do
@@ -56,9 +56,17 @@ describe "When normal collection types are defined" do
   end
 
   it "should allow only defined types" do
-    Job.new(:job_type => "other").should_not be_valid
+    @job = Job.new(:job_type => "other")
+    @job.should_not be_valid
   end
-  
+
+  it "should require any type" do
+    @job = Job.new
+    @job.should_not be_valid
+    @job.job_type = ""
+    @job.should_not be_valid
+  end
+
   it "should provide list of defined types" do
     Job.types.should include(:internal, :external)
   end
@@ -108,11 +116,10 @@ describe "When singleton type is defined" do
       before do
         Job.destroy_all
       end
-      it "should not create object" do
-        Job.basic.should_not be_instance_of(Job)
-      end
+
       it "should return empty scope" do
         Job.basic.class.should == ActiveRecord::NamedScope::Scope
+        Job.basic.should be_empty
       end
     end
 

@@ -16,8 +16,12 @@ module PolymorphicModel
 
     def validates_type
       validates_each @_polymorphic_column, {:on => :save} do |record, attr_name, value|
-        unless self.types.include?(value.to_sym)
-          record.errors.add_to_base("is undefined type (#{value.to_s}), correct types are: [#{self.types.map(&:to_s).join(', ')}]")
+        unless value.nil? || value == ""
+          unless self.types.include?(value.to_sym)
+            record.errors.add_to_base("is undefined type (#{value.to_s}), correct types are: [#{self.types.map(&:to_s).join(', ')}]")
+          end
+        else
+          record.errors.add_to_base("is not any type, correct types are: [#{self.types.map(&:to_s).join(', ')}]")
         end
       end
     end
