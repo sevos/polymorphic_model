@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{polymorphic_model}
-  s.version = "0.0.3"
+  s.version = "0.0.4"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Artur Roszczyk"]
-  s.date = %q{2009-11-23}
+  s.date = %q{2009-11-24}
   s.description = %q{Alternative for ActiveRecord's Single Table Inheritance}
   s.email = %q{artur.roszczyk@gmail.com}
   s.extra_rdoc_files = [
