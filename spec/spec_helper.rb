@@ -6,5 +6,4 @@ require 'spec/autorun'
 require 'lib/database'
 
 Spec::Runner.configure do |config|
-  config.before(:each) { set_database(["job", "offer"])  }
 end

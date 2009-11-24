@@ -1,7 +1,8 @@
 require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
 
 describe "PolymorphicModel" do
-  before do
+  before(:each) do
+    set_database(["job"])
     Job.instance_eval do
       polymorphic_model :with_type_column => :job_type
     end
@@ -30,6 +31,7 @@ end
 
 describe "When normal collection types are defined" do
   before do
+    set_database(["job"])
     Job.instance_eval do
       polymorphic_model :with_type_column => :job_type
       define_type :internal
@@ -75,6 +77,7 @@ end
 describe "When singleton type is defined" do
   describe "with autocreate" do
     before do
+      set_database(["job"])
       Job.instance_eval do
         polymorphic_model :with_type_column => :job_type
         define_type :basic, :singleton => true, :autocreate => true  
@@ -106,6 +109,7 @@ describe "When singleton type is defined" do
 
   describe "without autocreate" do
     before do
+      set_database(["job"])
       Job.instance_eval do
         polymorphic_model :with_type_column => :job_type
         define_type :basic, :singleton => true, :autocreate => false
