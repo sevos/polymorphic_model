@@ -1,6 +1,34 @@
 = polymorphic_model
 
+Not everybody likes Single Table Ineritance or just not everywhere can be used.
 This is simple substitute for ActiveRecord's STI mechanism.
+It uses defined column to determine object type.
+
+Simple use case:
+
+    # migration:
+    
+    create_table :configurations do |t|
+      t.string :entry_type
+      t.string :value
+    end
+
+    # model
+    
+    class Configuration < ActiveRecord::Base
+      polymorphic_model :with_type_column => :entry_type
+      define_type :website_name, :singleton => true, :autocreate => true
+      define_type :author
+    end
+    
+    # example usage
+    
+    @name = Configuration.website_name.value
+    @authors = Configuration.author.map(&:value)
+
+This is just example. It can be used wherever STI is too drastically splits model file
+or more than one controller is not what you actually want. 
+You can avoid also problems with polymorphic_path.
 
 == Note on Patches/Pull Requests
  
@@ -15,4 +43,4 @@ This is simple substitute for ActiveRecord's STI mechanism.
 
 == Copyright
 
-Copyright (c) 2009 Artur Roszczyk. See LICENSE for details.
+Distributed under MIT license. See LICENSE for details.
