@@ -139,9 +139,22 @@ describe "When singleton type is defined" do
         Job.destroy_all
       end
 
-      it "should return empty scope" do
-        Job.basic.class.should == ActiveRecord::NamedScope::Scope
-        Job.basic.should be_empty
+      it "should return nil" do
+        Job.basic.should be_nil
+        Job.basic.should == nil
+        Job.basic.should === nil
+      end
+
+      it "should allow to create object" do
+        Job.basic.create.should be_basic
+      end
+
+      it "should allow to create! object" do
+        Job.basic.create!.should be_basic
+      end
+
+      it "should allow to build object" do
+        Job.basic.new.should be_basic
       end
     end
 

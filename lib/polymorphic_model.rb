@@ -65,7 +65,8 @@ module PolymorphicModel
         self.class.instance_eval do
           define_method t do
             scope = scoped(:conditions => condition_hash)
-            scope.first || (options[:autocreate] ? create!(condition_hash) : scope)
+            nil_mock = PolymorphicModel::NilClass.new(self, @_polymorphic_column, t)
+            scope.first || (options[:autocreate] ? create!(condition_hash) : nil_mock)
           end
         end
       else
@@ -77,6 +78,7 @@ end
 
 require 'rubygems'
 require 'active_record'
+require 'polymorphic_model/nil_class'
 class ActiveRecord::Base
   extend PolymorphicModel::Initializer
 end
