@@ -19,6 +19,24 @@ describe "PolymorphicModel" do
       end
     end
 
+    describe :valid_type? do
+      it "should return true if type is on list" do
+        @job = Job.new(:job_type => "some_type")
+        @job.should be_valid_type
+      end
+      it "should return false if type is not on list" do
+        @job = Job.new(:job_type => "incorrect")
+        @job.should_not be_valid_type
+      end
+    end
+
+    it "should allow either string and symbol while setting type via setter" do
+      @job = Job.new(:job_type => :some_type)
+      @job.job_type.should == "some_type"
+      @job.job_type = :other_type
+      @job.job_type.should == "other_type"
+    end
+
     it "should create check methods" do
       Job.instance_methods.should include("some_type?")
     end

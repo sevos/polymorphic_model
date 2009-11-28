@@ -1,19 +1,42 @@
 module PolymorphicModel
   module Initializer
+    # Initializes model to be a polymorphic one
+    # Example usage:
+    #   polymorphic_model :with_type_column => :page_type 
     def polymorphic_model(options = {})
       if options[:with_type_column]
-        @_polymorphic_column = options[:with_type_column]
+        @_polymorphic_column = options[:with_type_column].to_sym
+        @_polymorphic_column.freeze
         @_model_types = []
         extend PolymorphicModel::ClassMethods
+        include PolymorphicModel::InstanceMethods
+        self.instance_eval do
+          define_method :"#{@_polymorphic_column}=" do |value|
+            super(value.to_s)
+          end
+        end
       end
     end
   end
 
+  module InstanceMethods
+    # Returns true if model instance is correct type
+    def valid_type?
+      self.class.types.include?(send(self.class.polymorphic_column_name).to_sym)
+    end
+  end
+
   module ClassMethods
+    # Returns list of allowed model types
     def types
       @_model_types.clone.freeze
     end
 
+    def polymorphic_column_name
+      @_polymorphic_column
+    end
+
+    # Type validation for polymorphic model
     def validates_type
       validates_each @_polymorphic_column, {:on => :save} do |record, attr_name, value|
         unless value.nil? || value == ""
@@ -26,6 +49,7 @@ module PolymorphicModel
       end
     end
 
+    # defines new type for model
     def define_type(t, options = {})
       column = @_polymorphic_column
       @_model_types << t.to_sym
